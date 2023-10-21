@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário e Tabela</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        form {
+            max-width: 300px;
+            margin: 0 auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .campos {
+            border: none;
+            height: 20px;
+            background-color: #EEEEEE;
+            border-radius: 4px; 
+        }
+        #formulario > span {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .button-row > input {
+            width: 100px;
+            height: 25px;
+            border: none;
+            border-radius: 4px;
+            padding: 5px;
+            background-color: blue;
+            color: #fff;
+        }
+        .button-row {
+            display: flex;
+            justify-content: space-evenly;
+        }
+    </style>
+</head>
+<body>
+    <form id="formulario">
+        <span>
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" class="campos" required>
+        </span>
+        <span> 
+            <label for="idade">Idade:</label>
+            <input type="number" id="idade" class="campos" required>
+        </span>
+        <span>
+            <label for="peso">Peso (kg):</label>
+            <input type="number" id="peso" step="0.01" class="campos" required> 
+        </span>
+        <span>
+            <label for="altura">Altura (m):</label>
+            <input type="number" id="altura" step="0.01" class="campos" required>  
+        </span>
+
+        <div class="button-row">
+            <input type="button" value="Enviar" onclick="adicionarLinha()">
+            <input type="button" value="IMC" onclick="calculateIMC()">
+        </div>
+    </form>
+
+    <table id="tabela">
+        <thead>
+            <tr id="camposTabela">
+                <th>Nome</th>
+                <th>Idade</th>
+                <th>Peso (kg)</th>
+                <th>Altura (m)</th>
+            </tr>
+        </thead>
+        <tbody id="corpo-tabela">
+        </tbody>
+    </table>
+
+    <script>
+        var nome, idade, peso, altura;
+        function adicionarLinha() {
+            nome = document.getElementById('nome').value;
+            idade = document.getElementById('idade').value;
+            peso = document.getElementById('peso').value;
+            altura = document.getElementById('altura').value;
+
+            const tabela = document.getElementById('corpo-tabela');
+            const novaLinha = tabela.insertRow();
+            novaLinha.classList.add("content-row");
+            const celulaNome = novaLinha.insertCell(0);
+            const celulaIdade = novaLinha.insertCell(1);
+            const celulaPeso = novaLinha.insertCell(2);
+            const celulaAltura = novaLinha.insertCell(3);
+
+            celulaNome.innerHTML = nome;
+            celulaIdade.innerHTML = idade;
+            celulaPeso.innerHTML = peso;
+            celulaAltura.innerHTML = altura;
+
+            // Limpa os campos do formulário após adicionar à tabela
+            document.getElementById('nome').value = '';
+            document.getElementById('idade').value = '';
+            document.getElementById('peso').value = '';
+            document.getElementById('altura').value = '';
+        }
+        function calculateIMC() {
+            createIfNotExists();
+            iterateColumn();
+        }
+        function createIfNotExists() {
+            numElements = document.getElementsByClassName('imc-header').length
+            if (numElements == 0) {
+                let tableHead = document.getElementById('camposTabela')
+                let th = document.createElement('th')
+                th.classList.add("imc-header");
+                th.innerHTML = 'IMC'
+                let newCell = tableHead.appendChild(th)
+            }
+        }
+        function iterateColumn() {
+            let rows = document.getElementsByClassName('content-row')
+            for (let rowId = 0; rowId < rows.length; rowId++) {
+                const row = rows[rowId];
+                let imcRow = document.getElementById('imc-' + rowId)
+                if (imcRow == null) {
+                    let cell = row.insertCell(4)
+                    cell.setAttribute("id", "imc-" + rowId)
+                    cell.innerHTML = getIMC(altura, peso)
+                }
+            }
+        }
+        function getIMC(altura, peso) {
+            console.log(altura, peso)
+            return peso / Math.pow(altura, 2)
+        }
+    </script>
+</body>
+</html>
