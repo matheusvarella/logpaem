@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Calculadora</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .calculator {
+            width: 300px;
+            margin: 0 auto;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+        }
+
+        .display {
+            text-align: right;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            height: 40px;
+            font-size: 20px;
+            padding: 5px;
+        }
+
+        .keys {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-gap: 10px;
+        }
+
+        button {
+            width: 100%;
+            height: 50px;
+            font-size: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="calculator">
+        <div class="display">
+            <input type="text" id="resultado" readonly>
+        </div>
+        <div class="keys">
+            <button onclick="limparDisplay()">C</button>
+            <button onclick="adicionarDisplay('7')">7</button>
+            <button onclick="adicionarDisplay('8')">8</button>
+            <button onclick="adicionarDisplay('9')">9</button>
+            <button onclick="adicionarDisplay('+')">+</button>
+            <button onclick="adicionarDisplay('4')">4</button>
+            <button onclick="adicionarDisplay('5')">5</button>
+            <button onclick="adicionarDisplay('6')">6</button>
+            <button onclick="adicionarDisplay('-')">-</button>
+            <button onclick="adicionarDisplay('1')">1</button>
+            <button onclick="adicionarDisplay('2')">2</button>
+            <button onclick="adicionarDisplay('3')">3</button>
+            <button onclick="adicionarDisplay('*')">*</button>
+            <button onclick="adicionarDisplay('/')">/</button>
+            <button onclick="adicionarDisplay('0')">0</button>
+            <button onclick="calcularResultado()">=</button>
+        </div>
+    </div>
+    <script>
+        let valorEntrada = '';
+        let valorResultado = 0;
+
+        function adicionarDisplay(value) {
+            valorEntrada += value;
+            document.getElementById('resultado').value = valorEntrada;
+        }
+
+        function limparDisplay() {
+            valorEntrada = '';
+            document.getElementById('resultado').value = '';
+        }
+
+        function calcularResultado() {
+            try {
+                valorResultado = eval(valorEntrada);
+                document.getElementById('resultado').value = valorResultado;
+                valorEntrada = valorResultado.toString();
+            } catch (error) {
+                document.getElementById('resultado').value = 'Erro';
+            }
+        }
+    </script>
+</body>
+
+</html>
